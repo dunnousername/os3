@@ -4,4 +4,4 @@ typedef struct tty_driver_t {
     void (*clear)(struct tty_driver_t*);
 } tty_driver_t;
 
-extern tty_driver_t chosen_tty;
+extern tty_driver_t *chosen_tty;

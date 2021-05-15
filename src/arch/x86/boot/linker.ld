@@ -1,7 +1,9 @@
-SECTIONS {
-    ENTRY(_start)
+ENTRY(_start)
 
-    . = 1M;
+SECTIONS {
+    __higher_half = 0xffffffff80000000;
+
+    . = __higher_half + 2M;
 
     .text : ALIGN(0x1000) {
         *(.text)
@@ -9,6 +11,10 @@ SECTIONS {
 
     .stivale2hdr : ALIGN(0x1000) {
         *(.stivale2hdr)
+    }
+
+    .rodata : ALIGN(0x1000) {
+        *(.rodata)
     }
 
     .data : ALIGN(0x1000) {

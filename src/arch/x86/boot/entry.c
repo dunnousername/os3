@@ -4,7 +4,10 @@
 #include <tty.h>
 #include <main.h>
 
-char *video = 0xB8000;
+static char *video = 0xB8000;
+
+static tty_driver_t simpletty;
+tty_driver_t *chosen_tty = &simpletty;
 
 struct simpletty_info_t {
     int cols;
@@ -44,10 +47,10 @@ struct stivale2_tag *parse_stivale(struct stivale2_tag *tag) {
     return (void *) 0;
 }
 
-void _cstart(struct stivale2_struct *stivale2_info) {
-    chosen_tty.write = simpletty_write;
-    chosen_tty.clear = simpletty_clear;
-    chosen_tty.extra = &simpletty_info;
+void _cstart(struct stivale2_struct *stivale2_info) {    
+    simpletty.write = simpletty_write;
+    simpletty.clear = simpletty_clear;
+    simpletty.extra = &simpletty_info;
 
     if (stivale2_info->tags) {
         struct stivale2_tag *current = (void *) stivale2_info->tags;

@@ -3,12 +3,12 @@
 
 struct stivale2_header_tag_terminal _stivale2_tag0;
 
-static uint8_t stack[8192];
+static uint8_t __attribute__(( aligned(16) )) stack[8192];
 
 struct stivale2_header __attribute__(( section(".stivale2hdr") )) _stivale2_header = {
     0,
     (uintptr_t)stack + sizeof(stack),
-    0,
+    2,
     &_stivale2_tag0
 };
 

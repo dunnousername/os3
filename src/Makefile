@@ -1,4 +1,5 @@
 .PHONY: clean iso x86
+CFLAGS:=-fno-pic -mgeneral-regs-only -mno-red-zone -fno-stack-protector -fpie -target x86_64-pc-none-elf -fno-builtin -ffreestanding -nostdlib -c
 
 iso: x86
 	mkdir iso
@@ -24,4 +25,4 @@ x86: main.elf
 	cd arch/x86/boot && make
 
 main.elf: main.c
-	clang -target x86_64-pc-none-elf -fno-builtin -ffreestanding -nostdlib -Iinclude/ -c main.c -o main.elf
+	clang $(CFLAGS) -Iinclude/ main.c -o main.elf
