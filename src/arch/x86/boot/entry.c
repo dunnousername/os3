@@ -54,7 +54,7 @@ void _cstart(struct stivale2_struct *stivale2_info) {
 
     if (stivale2_info->tags) {
         struct stivale2_tag *current = (void *) stivale2_info->tags;
-        while (current = parse_stivale(current));
+        while ((current = parse_stivale(current)));
     }
 
     kernel_main();
