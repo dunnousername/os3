@@ -16,6 +16,7 @@ iso: x86
 clean:
 	rm -rf iso
 	rm -rf x86.iso
+	rm -rf *.elf
 
 	rm -rf arch/x86/boot/*.elf
 
