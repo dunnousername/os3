@@ -1,3 +1,6 @@
+#ifndef _ENDIAN_H_
+#define _ENDIAN_H_
+
 #include <stdint.h>
 
 #define PLATFORM_NUMBITS (sizeof(uintptr_t) * 8)
@@ -27,3 +30,5 @@ int convert8 (uint8_t  *w, int from, int to);
 int convert16(uint16_t *w, int from, int to);
 int convert32(uint32_t *w, int from, int to);
 int convert64(uint64_t *w, int from, int to);
+
+#endif
