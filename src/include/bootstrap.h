@@ -5,4 +5,6 @@
 
 void *bs_alloc(uintptr_t length);
 
+uintptr_t bs_reset_counter();
+
 #endif
