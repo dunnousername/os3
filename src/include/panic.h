@@ -1,10 +1,14 @@
 #ifndef _PANIC_H_
 #define _PANIC_H_
 
-#define _xstr(s) _str(s)
-#define str(s) #s
-#define PANIC(reason) panic(__FILE__, __func__, xstr(__LINE__), (reason))
+#include <stdint.h>
 
-void panic(char *file, char *func, char *line, char *reason);
+#define _xstr(s) _str(s)
+#define _str(s) #s
+
+#define PANIC(reason) PANIC2(reason,(uint64_t)0)
+#define PANIC2(reason,extra) panic(__FILE__, __func__, _xstr(__LINE__), (reason), (extra))
+
+void panic(const char *file, const char *func, const char *line, const char *reason, uint64_t extra);
 
 #endif
