@@ -1,4 +1,4 @@
-#include "../../../stivale/stivale2.h"
+#include <stivale2.h>
 #include <stdint.h>
 
 struct stivale2_header_tag_terminal _stivale2_tag0;

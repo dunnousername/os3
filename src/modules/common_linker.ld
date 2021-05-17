@@ -15,6 +15,10 @@ SECTIONS {
         *(.data*)
     }
 
+    .note : {
+        *(.note*)
+    }
+    
     .bss : {
         *(.bss*)
     }

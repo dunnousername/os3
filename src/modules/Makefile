@@ -4,6 +4,7 @@ ISO_INSTALL_MODULES=$(addprefix iso_install-,$(MODULES))
 
 .PHONY: all clean iso_install iso_mkdir $(MODULES) $(ISO_INSTALL_MODULES)
 
+export LDFLAGS
 export CFLAGS
 
 all: $(MODULES)

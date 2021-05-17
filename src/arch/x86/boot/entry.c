@@ -1,8 +1,11 @@
 #include <stdint.h>
-#include "../../../stivale/stivale2.h"
+#include <stivale2.h>
 
 #include <tty.h>
 #include <main.h>
+#include <modules.h>
+#include <elf.h>
+#include <bootstrap.h>
 
 static char *video = 0xB8000;
 
@@ -36,6 +39,16 @@ struct stivale2_tag *parse_stivale(struct stivale2_tag *tag) {
     }
 
     switch (tag->identifier) {
+        case 0x4b6fe466aade04ce:;
+            module_desc_t desc;
+            struct stivale2_struct_tag_modules *tag_modules = (void *) tag;
+            for (int i = 0; i < tag_modules->module_count; i++) {
+                bs_reset_counter();
+                desc.start = load_elf((void *) tag_modules->modules[i].begin);
+                desc.length = bs_reset_counter();
+                load_module(desc);
+            }
+            break;
         default:
             break;
     }
@@ -47,7 +60,7 @@ struct stivale2_tag *parse_stivale(struct stivale2_tag *tag) {
     return (void *) 0;
 }
 
-void _cstart(struct stivale2_struct *stivale2_info) {    
+void _cstart(struct stivale2_struct *stivale2_info) { 
     simpletty.write = simpletty_write;
     simpletty.clear = simpletty_clear;
     simpletty.extra = &simpletty_info;

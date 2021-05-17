@@ -1,5 +1,12 @@
-.PHONY: clean iso x86
-CFLAGS:=-fno-pic -mgeneral-regs-only -mno-red-zone -fno-stack-protector -fpie -target x86_64-pc-none-elf -fno-builtin -ffreestanding -nostdlib -c
+.PHONY: clean iso x86 modules
+
+LDFLAGS:=-fno-pic -mgeneral-regs-only -mno-red-zone -fno-stack-protector -fpie -target x86_64-pc-none-elf -fno-builtin -ffreestanding -nostdlib
+CFLAGS:=$(LDFLAGS) -I$(PWD)/include/ -c
+
+export CFLAGS
+export LDFLAGS
+
+OBJECTS=main.elf memfuncs.elf modules.elf bootstrap.elf endian.elf elf.elf panic.elf _debug.elf
 
 iso: x86
 	mkdir iso
@@ -8,6 +15,7 @@ iso: x86
 	cp limine/limine-cd.bin iso/limine-cd.bin
 	cp limine/limine-eltorito-efi.bin iso/limine-eltorito-efi.bin
 	cp limine/limine.sys iso/limine.sys
+	cd modules && $(MAKE) iso_install && cd ..
 	xorriso -as mkisofs -b limine-cd.bin -no-emul-boot -boot-load-size 4 \
 		-boot-info-table -part_like_isohybrid -eltorito-alt-boot \
 		-e limine-eltorito-efi.bin -no-emul-boot iso/ -isohybrid-gpt-basdat \
@@ -20,9 +28,21 @@ clean:
 	rm -rf *.elf
 
 	rm -rf arch/x86/boot/*.elf
+	rm -rf arch/x86/mmu/*.elf
+	rm -rf arch/x86/serial/*.elf
 
-x86: main.elf
-	cd arch/x86/boot && make
+	cd modules && $(MAKE) clean && cd ..
 
-main.elf: main.c
-	clang $(CFLAGS) -Iinclude/ main.c -o main.elf
+modules:
+	cd modules && $(MAKE) all && cd ..
+
+x86: total.elf
+#	cd arch/x86/mmu && make && cd ../../..
+#	cd arch/x86/serial && make && cd ../../..
+	cd arch/x86/boot && make && cd ../../..
+
+total.elf: $(OBJECTS)
+	ld -i -o total.elf $(OBJECTS)
+
+$(OBJECTS): %.elf : %.c
+	clang $(CFLAGS) -o $@ $<

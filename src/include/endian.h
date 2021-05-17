@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define PLATFORM_NUMBITS (sizeof(uintptr_t) * 8)
+#define PLATFORM_NUMBITS __INTPTR_WIDTH__ 
 
 #define ENDIAN_LITTLE 1
 #define ENDIAN_BIG    2

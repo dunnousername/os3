@@ -5,5 +5,6 @@ extern _cstart
 global _start
 
 _start:
-    push rdi
+    mov al, '.'
+    out 0xE9, al
     call _cstart
